@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
+import { useEffect, useState, useCallback, memo } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -11,48 +11,78 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-interface LocationPickerProps {
-  onLocationSelect: (location: { lat: number; lng: number } | null) => void;
-  initialPosition?: { lat: number; lng: number } | null;
-  interactive?: boolean;
+interface LocationMarkerProps {
+  onLocationSelect: (location: { lat: number; lng: number }) => void;
 }
 
-function LocationMarker({ onLocationSelect, interactive = true }: LocationPickerProps) {
+// Separate component for handling map events - must be inside MapContainer
+const LocationMarker = memo(function LocationMarker({ onLocationSelect }: LocationMarkerProps) {
   const [position, setPosition] = useState<L.LatLng | null>(null);
-  const map = useMap();
 
-  useMapEvents({
+  const map = useMapEvents({
     click(e) {
-      if (!interactive) return;
       setPosition(e.latlng);
       onLocationSelect({ lat: e.latlng.lat, lng: e.latlng.lng });
     },
     locationfound(e) {
-      if (!interactive) return;
       setPosition(e.latlng);
       map.flyTo(e.latlng, 15);
       onLocationSelect({ lat: e.latlng.lat, lng: e.latlng.lng });
     },
   });
 
-  // Try to get user location on mount
   useEffect(() => {
-    if (interactive) {
-      map.locate();
-    }
-  }, [map, interactive]);
+    map.locate();
+  }, [map]);
 
-  return position === null ? null : <Marker position={position} />;
+  if (!position) return null;
+  
+  return <Marker position={position} />;
+});
+
+interface LocationPickerProps {
+  onLocationSelect: (location: { lat: number; lng: number } | null) => void;
 }
 
-interface StaticLocationPickerProps {
+export function LocationPicker({ onLocationSelect }: LocationPickerProps) {
+  // Dakar, Senegal coordinates
+  const defaultCenter: [number, number] = [14.6937, -17.4441];
+
+  const handleLocationSelect = useCallback((location: { lat: number; lng: number }) => {
+    onLocationSelect(location);
+  }, [onLocationSelect]);
+
+  return (
+    <div>
+      <div className="h-64 rounded-xl overflow-hidden border">
+        <MapContainer
+          center={defaultCenter}
+          zoom={12}
+          className="h-full w-full"
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <LocationMarker onLocationSelect={handleLocationSelect} />
+        </MapContainer>
+      </div>
+      <p className="text-xs text-muted-foreground mt-2 text-center">
+        Cliquez sur la carte pour indiquer votre position exacte
+      </p>
+    </div>
+  );
+}
+
+interface StaticLocationMapProps {
   center: [number, number];
   zoom?: number;
   markerPosition?: [number, number];
   className?: string;
 }
 
-export function StaticLocationMap({ center, zoom = 15, markerPosition, className }: StaticLocationPickerProps) {
+export function StaticLocationMap({ center, zoom = 15, markerPosition, className }: StaticLocationMapProps) {
   return (
     <div className={`h-64 rounded-xl overflow-hidden border ${className || ''}`}>
       <MapContainer
@@ -69,35 +99,6 @@ export function StaticLocationMap({ center, zoom = 15, markerPosition, className
         />
         {markerPosition && <Marker position={markerPosition} />}
       </MapContainer>
-    </div>
-  );
-}
-
-export function LocationPicker({ onLocationSelect, initialPosition, interactive = true }: LocationPickerProps) {
-  // Dakar, Senegal coordinates
-  const defaultCenter: [number, number] = [14.6937, -17.4441];
-
-  return (
-    <div>
-      <div className="h-64 rounded-xl overflow-hidden border">
-        <MapContainer
-          center={defaultCenter}
-          zoom={12}
-          className="h-full w-full"
-          scrollWheelZoom={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <LocationMarker onLocationSelect={onLocationSelect} interactive={interactive} />
-        </MapContainer>
-      </div>
-      {interactive && (
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          Cliquez sur la carte pour indiquer votre position exacte
-        </p>
-      )}
     </div>
   );
 }
