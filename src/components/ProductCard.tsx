@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
+  const navigate = useNavigate();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-SN').format(price);
@@ -38,11 +39,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       image_url: product.image_url,
     });
     
-    toast.success('Produit ajouté au panier', {
-      description: product.name,
+    toast.success(`1 x ${product.name} ajouté au panier`, {
       action: {
         label: 'Voir le panier',
-        onClick: () => window.location.href = '/panier',
+        onClick: () => navigate('/panier'),
       },
     });
   };
