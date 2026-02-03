@@ -117,6 +117,13 @@ export function Header() {
                 Catégories
               </Link>
               <Link
+                to="/a-propos"
+                className="block px-4 py-2 rounded-lg hover:bg-muted transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                À Propos
+              </Link>
+              <Link
                 to="/panier"
                 className="block px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                 onClick={() => setIsMenuOpen(false)}
