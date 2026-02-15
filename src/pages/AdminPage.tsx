@@ -22,6 +22,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { supabase } from '@/integrations/supabase/client';
 import type { Product, Category, Order } from '@/types/database';
 import { toast } from 'sonner';
+import { ImageUpload } from '@/components/ImageUpload';
 
 type AdminTab = 'dashboard' | 'products' | 'orders';
 
@@ -462,12 +463,10 @@ const AdminPage = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="image_url">URL de l'image</Label>
-                      <Input
-                        id="image_url"
+                      <Label>Image du produit</Label>
+                      <ImageUpload
                         value={formData.image_url}
-                        onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                        placeholder="https://..."
+                        onChange={(url) => setFormData({ ...formData, image_url: url })}
                       />
                     </div>
 
