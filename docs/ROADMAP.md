@@ -107,25 +107,25 @@
 
 ## 📦 Livrables par Phase
 
-### Phase 1 (Fin Semaine 1)
+### Phase 1
 - [ ] Login admin sécurisé via Supabase
 - [ ] RLS configuré sur toutes les tables
 
-### Phase 2 (Fin Semaine 3)
+### Phase 2
 - [ ] Page produit détaillée fonctionnelle
 - [ ] Upload d'images fonctionnel
 - [ ] Gestion des variantes fonctionnelle
 
-### Phase 3 (Fin Semaine 4)
+### Phase 3 
 - [ ] Panier avec sauvegarde cloud
 - [ ] Page FAQ en ligne
 
-### Phase 4 (Fin Semaine 5)
+### Phase 4
 - [ ] PWA installable
 - [ ] Images optimisées
 - [ ] SEO complet
 
-### Phase 5 (Fin Semaine 6)
+### Phase 5
 - [ ] Site complet en production
 
 ---
@@ -134,8 +134,8 @@
 
 1. **Corriger le CSS** ✅ (fait)
 2. **Meta tags HTML** ✅ (fait)
-3. **Supprimer le login hardcodé** - 30 min
-4. **Lazy loading images** - 1h
+3. **Supprimer le login hardcodé** 
+4. **Lazy loading images** 
 5. **Ajouter sitemap** - 30 min
 
 ---

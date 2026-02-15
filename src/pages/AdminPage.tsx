@@ -86,8 +86,23 @@ const AdminPage = () => {
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      // Authentification via Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      
+      // Vérifier si l'utilisateur est admin
+      const { data: adminData, error: adminError } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('user_id', data.user.id)
+        .single();
+        
+      if (adminError || !adminData) {
+        await supabase.auth.signOut();
+        toast.error('Accès admin refusé');
+        return;
+      }
+      
       setIsAuthenticated(true);
       fetchData();
       toast.success('Connexion réussie');

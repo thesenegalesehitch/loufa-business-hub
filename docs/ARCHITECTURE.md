@@ -288,27 +288,25 @@ src/
 
 ## 🚀 Plan d'Action Priorisé
 
-### Phase 1: Sécurité (Semaine 1)
+### Phase 1: Sécurité
 1. Supprimer le login admin codé en dur
 2. Configurer RLS pour toutes les tables
 3. Créer les Edge Functions pour validation
 
-### Phase 2: Core Features (Semaine 2-3)
+### Phase 2: Core Features
 1. Page produit détaillée avec variantes
 2. Upload d'images vers Supabase Storage
 3. Gestion automatique du stock
 
-### Phase 3: UX (Semaine 4)
+### Phase 3: UX
 1. Lazy loading des images
 2. Cache Service Worker
 3. Animations fluides
 
-### Phase 4: Performance (Semaine 5)
+### Phase 4: Performance
 1. Optimisation WebP
 2. Code splitting
 3. SEO (sitemap, robots.txt, JSON-LD)
 
-### Phase 5: Support (Semaine 6)
+### Phase 5: Support
 1. Page FAQ
-2. Chat WhatsApp intégré
-3. Politique de retour
