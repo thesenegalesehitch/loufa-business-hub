@@ -62,6 +62,7 @@ const ProductPage = () => {
         name: product.name,
         price: product.price,
         image_url: product.image_url,
+        quantity: 1,
       });
     }
 
