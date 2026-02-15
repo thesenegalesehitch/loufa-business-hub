@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Trash2, Minus, Plus, MapPin, MessageCircle, ShoppingBag, LogIn } from 'lucide-react';
+import { ArrowLeft, Trash2, Minus, Plus, MapPin, MessageCircle, ShoppingBag } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,6 @@ import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cartStore';
 import { LocationPicker } from '@/components/LocationPicker';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -23,8 +22,6 @@ const checkoutSchema = z.object({
 const CartPage = () => {
   const navigate = useNavigate();
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice } = useCartStore();
-  const { user, profile, signInWithGoogle } = useAuth();
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -38,7 +35,7 @@ const CartPage = () => {
   }, []);
 
   const totalPrice = getTotalPrice();
-  const WHATSAPP_NUMBER = '221767558976';
+  const WHATSAPP_NUMBER = '221771234567'; // Replace with actual number
 
   const generateWhatsAppMessage = useCallback(() => {
     const itemsList = items
@@ -49,20 +46,20 @@ const CartPage = () => {
       ? `https://www.google.com/maps?q=${location.lat},${location.lng}`
       : 'Non spécifié';
 
-    return `*LOUFA BUSINESS - Nouvelle Commande*
+    return `📦 *LOUFA BUSINESS - Nouvelle Commande*
 
 ${itemsList}
 
-*Total:* ${formatPrice(totalPrice)} FCFA
+💰 *Total: ${formatPrice(totalPrice)} FCFA*
 
-*Livraison:* ${address}
-*Position:* ${mapsLink}
+📍 *Livraison:* ${address}
+🗺️ *Position:* ${mapsLink}
 
-*Client:* ${name}
-*Telephone:* ${phone}
+👤 *Client:* ${name}
+📞 *Téléphone:* ${phone}
 
 ---
-_Commande envoyee depuis Loufa Business_`;
+_Commande envoyée depuis Loufa Business_`;
   }, [items, name, phone, address, location, totalPrice, formatPrice]);
 
   const handleSubmit = async () => {
@@ -269,44 +266,6 @@ _Commande envoyee depuis Loufa Business_`;
                   Informations de livraison
                 </h2>
                 
-                {/* Login required message */}
-                {!user && (
-                  <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      Connectez-vous pour commander et suivre vos commandes
-                    </p>
-                    <Button
-                      onClick={async () => {
-                        setIsGoogleLoading(true);
-                        try {
-                          await signInWithGoogle();
-                        } catch (error) {
-                          toast.error('Erreur lors de la connexion');
-                        } finally {
-                          setIsGoogleLoading(false);
-                        }
-                      }}
-                      disabled={isGoogleLoading}
-                      className="w-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                    >
-                      {isGoogleLoading ? 'Connexion...' : (
-                        <>
-                          <LogIn className="h-4 w-4 mr-2" />
-                          Se connecter avec Google
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
-                
-                {user && profile && (
-                  <div className="bg-muted/30 rounded-lg p-3 mb-4">
-                    <p className="text-sm font-medium">
-                      Commandé par: {profile.full_name || profile.email}
-                    </p>
-                  </div>
-                )}
-                
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="name">Nom complet *</Label>
@@ -366,21 +325,15 @@ _Commande envoyee depuis Loufa Business_`;
                 size="lg"
                 className="w-full btn-whatsapp rounded-xl"
                 onClick={handleSubmit}
-                disabled={isSubmitting || !user}
+                disabled={isSubmitting}
               >
                 <MessageCircle className="h-5 w-5 mr-2" />
                 {isSubmitting ? 'Envoi en cours...' : 'Commander sur WhatsApp'}
               </Button>
               
-              {!user ? (
-                <p className="text-xs text-center text-muted-foreground">
-                  Connectez-vous pour finaliser votre commande
-                </p>
-              ) : (
-                <p className="text-xs text-center text-muted-foreground">
-                  En cliquant, vous serez redirigé vers WhatsApp avec le récapitulatif de votre commande
-                </p>
-              )}
+              <p className="text-xs text-center text-muted-foreground">
+                En cliquant, vous serez redirigé vers WhatsApp avec le récapitulatif de votre commande
+              </p>
             </div>
           </div>
         )}

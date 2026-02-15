@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Truck, Shield, Headphones } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 export function HeroSection() {
@@ -29,14 +30,14 @@ export function HeroSection() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
             >
               Achetez tout ce dont vous avez besoin sur{' '}
-              <span className="text-primary hover:opacity-80 transition-opacity cursor-pointer">Loufa Business</span>
+              <span className="text-primary">Loufa Business</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-lg text-muted-foreground hover:text-white transition-colors mb-8 max-w-lg"
+              className="text-lg text-muted-foreground mb-8 max-w-lg"
             >
               Des milliers de produits de qualité, livrés partout au Sénégal. 
               Commandez facilement via WhatsApp !
@@ -48,12 +49,11 @@ export function HeroSection() {
               transition={{ delay: 0.4 }}
               className="flex flex-wrap gap-4"
             >
-              <Link
-                to="/categories"
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer btn-primary-gradient"
-              >
-                Découvrir les produits
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Link to="/categories">
+                <Button size="lg" className="btn-primary-gradient rounded-full px-8">
+                  Découvrir les produits
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </Link>
             </motion.div>
           </motion.div>

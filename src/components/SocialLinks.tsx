@@ -20,7 +20,7 @@ const socialLinks: SocialLink[] = [
   {
     name: 'Instagram',
     icon: <Instagram className="h-5 w-5" />,
-    url: 'https://www.instagram.com/loufa_pro_95/',
+    url: 'https://instagram.com/loufabusiness',
     color: 'bg-gradient-to-br from-[#833AB4]/10 via-[#FD1D1D]/10 to-[#F77737]/10 text-[#E4405F]',
     hoverColor: 'hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] hover:text-white',
   },
@@ -34,7 +34,7 @@ const socialLinks: SocialLink[] = [
   {
     name: 'WhatsApp',
     icon: <MessageCircle className="h-5 w-5" />,
-    url: 'https://wa.me/221767558976',
+    url: 'https://wa.me/221771234567',
     color: 'bg-[#25D366]/10 text-[#25D366]',
     hoverColor: 'hover:bg-[#25D366] hover:text-white',
   },

@@ -1,29 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
 import { SearchBar } from './SearchBar';
-import { useAuth } from '@/contexts/AuthContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
   const totalItems = useCartStore((state) => state.getTotalItems());
-  const { user, profile, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
 
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
@@ -31,7 +18,9 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="Loufa Business Logo" className="w-10 h-10 rounded-xl object-cover" />
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-xl">L</span>
+            </div>
             <span className="font-bold text-xl hidden sm:block">
               Loufa <span className="text-primary">Business</span>
             </span>
@@ -73,45 +62,15 @@ export function Header() {
               )}
             </Button>
 
-            {/* User Menu / Login */}
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hidden sm:flex">
-                    {profile?.avatar_url ? (
-                      <img 
-                        src={profile.avatar_url} 
-                        alt={profile.full_name || 'User'} 
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <User className="h-5 w-5" />
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem className="font-medium">
-                    {profile?.full_name || profile?.email || 'Utilisateur'}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/admin')}>
-                    Administration
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Déconnexion
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hidden sm:flex"
-                onClick={() => navigate('/connexion')}
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            )}
+            {/* Admin Link */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden sm:flex"
+              onClick={() => navigate('/admin')}
+            >
+              <User className="h-5 w-5" />
+            </Button>
 
             {/* Mobile Menu Toggle */}
             <Button

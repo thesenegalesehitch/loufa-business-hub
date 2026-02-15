@@ -73,57 +73,91 @@ CREATE POLICY "Anyone can create orders"
 ON public.orders FOR INSERT 
 WITH CHECK (true);
 
--- Orders policies for authenticated users (dev mode - change in production)
-CREATE POLICY "Users can view own orders" 
+-- Only admins can view orders
+CREATE POLICY "Admins can view orders" 
 ON public.orders FOR SELECT 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Users can update own orders" 
+-- Only admins can update orders
+CREATE POLICY "Admins can update orders" 
 ON public.orders FOR UPDATE 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
--- Admin users policies - Simplified for dev (allow any authenticated user)
-CREATE POLICY "Authenticated users can view admin_users" 
+-- Admin users policies
+CREATE POLICY "Admins can view admin_users" 
 ON public.admin_users FOR SELECT 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Authenticated users can insert admin_users" 
-ON public.admin_users FOR INSERT 
-WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can update admin_users" 
-ON public.admin_users FOR UPDATE 
-USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Authenticated users can delete admin_users" 
-ON public.admin_users FOR DELETE 
-USING (auth.role() = 'authenticated');
-
--- Product management policies for authenticated users (dev mode)
-CREATE POLICY "Authenticated users can insert products" 
+-- Product management policies for admins
+CREATE POLICY "Admins can insert products" 
 ON public.products FOR INSERT 
-WITH CHECK (auth.role() = 'authenticated');
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Authenticated users can update products" 
+CREATE POLICY "Admins can update products" 
 ON public.products FOR UPDATE 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Authenticated users can delete products" 
+CREATE POLICY "Admins can delete products" 
 ON public.products FOR DELETE 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
--- Category management policies for authenticated users (dev mode)
-CREATE POLICY "Authenticated users can insert categories" 
+-- Category management policies for admins
+CREATE POLICY "Admins can insert categories" 
 ON public.categories FOR INSERT 
-WITH CHECK (auth.role() = 'authenticated');
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Authenticated users can update categories" 
+CREATE POLICY "Admins can update categories" 
 ON public.categories FOR UPDATE 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
-CREATE POLICY "Authenticated users can delete categories" 
+CREATE POLICY "Admins can delete categories" 
 ON public.categories FOR DELETE 
-USING (auth.role() = 'authenticated');
+USING (
+  EXISTS (
+    SELECT 1 FROM public.admin_users 
+    WHERE admin_users.user_id = auth.uid()
+  )
+);
 
 -- Full-text search function for products
 CREATE OR REPLACE FUNCTION public.update_product_search_vector()
@@ -165,10 +199,24 @@ CREATE INDEX products_featured_idx ON public.products (is_featured) WHERE is_fea
 CREATE INDEX categories_slug_idx ON public.categories (slug);
 CREATE INDEX products_slug_idx ON public.products (slug);
 
--- Insert categories
+-- Insert sample categories
 INSERT INTO public.categories (name, slug, icon, description, display_order) VALUES
-  ('Technologie', 'technologie', '💻', 'Ordinateurs, smartphones, gadgets', 1),
-  ('Parfums', 'parfums', '🧴', 'Parfums et fragrances', 2),
-  ('Mode', 'mode', '👗', 'Vêtements et accessoires', 3),
-  ('Automobiles', 'automobiles', '🚗', 'Voitures et accessoires auto', 4),
-  ('Soins Peau', 'soins-peau', '🧖', 'Produits de soins pour la peau', 5);
+  ('Électronique', 'electronique', '📱', 'Smartphones, ordinateurs, accessoires', 1),
+  ('Mode', 'mode', '👗', 'Vêtements, chaussures, accessoires', 2),
+  ('Maison', 'maison', '🏠', 'Meubles, décoration, électroménager', 3),
+  ('Beauté', 'beaute', '💄', 'Cosmétiques, parfums, soins', 4),
+  ('Sport', 'sport', '⚽', 'Équipements sportifs, vêtements', 5),
+  ('Alimentation', 'alimentation', '🍎', 'Produits frais, épicerie', 6);
+
+-- Insert sample products
+INSERT INTO public.products (name, slug, description, price, original_price, category_id, status, is_featured, stock) VALUES
+  ('iPhone 15 Pro Max', 'iphone-15-pro-max', 'Le dernier iPhone avec puce A17 Pro', 950000, 1100000, (SELECT id FROM public.categories WHERE slug = 'electronique'), 'top_vente', true, 15),
+  ('Samsung Galaxy S24', 'samsung-galaxy-s24', 'Smartphone Android haut de gamme', 650000, NULL, (SELECT id FROM public.categories WHERE slug = 'electronique'), 'active', true, 20),
+  ('MacBook Air M3', 'macbook-air-m3', 'Ordinateur portable Apple léger et puissant', 1200000, 1350000, (SELECT id FROM public.categories WHERE slug = 'electronique'), 'promo', true, 8),
+  ('Robe Africaine Wax', 'robe-africaine-wax', 'Magnifique robe en tissu wax authentique', 35000, NULL, (SELECT id FROM public.categories WHERE slug = 'mode'), 'top_vente', true, 50),
+  ('Ensemble Boubou Homme', 'ensemble-boubou-homme', 'Boubou traditionnel brodé à la main', 45000, 55000, (SELECT id FROM public.categories WHERE slug = 'mode'), 'promo', false, 30),
+  ('Canapé 3 Places', 'canape-3-places', 'Canapé moderne confortable', 250000, NULL, (SELECT id FROM public.categories WHERE slug = 'maison'), 'active', true, 5),
+  ('Parfum Oriental', 'parfum-oriental', 'Fragrance luxueuse aux notes orientales', 25000, 30000, (SELECT id FROM public.categories WHERE slug = 'beaute'), 'promo', false, 100),
+  ('Maillot Sénégal', 'maillot-senegal', 'Maillot officiel équipe nationale', 20000, NULL, (SELECT id FROM public.categories WHERE slug = 'sport'), 'top_vente', true, 200),
+  ('Écouteurs AirPods Pro', 'airpods-pro', 'Écouteurs sans fil avec réduction de bruit', 180000, 220000, (SELECT id FROM public.categories WHERE slug = 'electronique'), 'promo', false, 45),
+  ('Sac à Main Cuir', 'sac-main-cuir', 'Sac élégant en cuir véritable', 55000, NULL, (SELECT id FROM public.categories WHERE slug = 'mode'), 'active', false, 25);

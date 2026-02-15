@@ -12,7 +12,9 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.jpg" alt="Loufa Business Logo" className="w-10 h-10 rounded-xl object-cover" />
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-xl">L</span>
+              </div>
               <span className="font-bold text-xl">Loufa Business</span>
             </div>
             <p className="text-sm text-background/70 mb-4">
@@ -65,7 +67,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-background/70">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                +221 76 755 89 76
+                +221 77 123 45 67
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />

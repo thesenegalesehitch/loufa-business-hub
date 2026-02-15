@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Package, 
@@ -10,10 +10,7 @@ import {
   LogOut,
   LayoutDashboard,
   Tags,
-  ClipboardList,
-  Home,
-  ArrowLeft,
-  Grid
+  ClipboardList
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +23,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Product, Category, Order } from '@/types/database';
 import { toast } from 'sonner';
 
-type AdminTab = 'dashboard' | 'products' | 'categories' | 'orders';
+type AdminTab = 'dashboard' | 'products' | 'orders';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -37,18 +34,9 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
-  // Category form state
-  const [categoryFormData, setCategoryFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    icon: '',
-    display_order: 0,
-  });
+  // Form state
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -97,17 +85,19 @@ const AdminPage = () => {
   };
 
   const handleLogin = async (email: string, password: string) => {
-    // Simple login without Supabase auth for demo purposes
-    if (email === 'admin@loufabusiness.sn' && password === 'admin123') {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       setIsAuthenticated(true);
       fetchData();
       toast.success('Connexion réussie');
-    } else {
-      toast.error('Email ou mot de passe incorrect');
+    } catch (error: any) {
+      toast.error(error.message || 'Erreur de connexion');
     }
   };
 
   const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
     toast.success('Déconnexion réussie');
   };
@@ -188,17 +178,6 @@ const AdminPage = () => {
     setEditingProduct(null);
   };
 
-  const resetCategoryForm = () => {
-    setCategoryFormData({
-      name: '',
-      slug: '',
-      description: '',
-      icon: '',
-      display_order: categories.length + 1,
-    });
-    setEditingCategory(null);
-  };
-
   const openEditDialog = (product: Product) => {
     setEditingProduct(product);
     setFormData({
@@ -214,62 +193,6 @@ const AdminPage = () => {
       is_featured: product.is_featured,
     });
     setIsDialogOpen(true);
-  };
-
-  const openEditCategoryDialog = (category: Category) => {
-    setEditingCategory(category);
-    setCategoryFormData({
-      name: category.name,
-      slug: category.slug,
-      description: category.description || '',
-      icon: category.icon || '',
-      display_order: category.display_order || 0,
-    });
-    setIsCategoryDialogOpen(true);
-  };
-
-  const handleSubmitCategory = async () => {
-    try {
-      const categoryData = {
-        name: categoryFormData.name,
-        slug: categoryFormData.slug || categoryFormData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-        description: categoryFormData.description || null,
-        icon: categoryFormData.icon || '📦',
-        display_order: categoryFormData.display_order,
-      };
-
-      if (editingCategory) {
-        const { error } = await supabase
-          .from('categories')
-          .update(categoryData)
-          .eq('id', editingCategory.id);
-        if (error) throw error;
-        toast.success('Catégorie modifiée');
-      } else {
-        const { error } = await supabase.from('categories').insert(categoryData);
-        if (error) throw error;
-        toast.success('Catégorie ajoutée');
-      }
-
-      setIsCategoryDialogOpen(false);
-      resetCategoryForm();
-      fetchData();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de l\'enregistrement');
-    }
-  };
-
-  const handleDeleteCategory = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette catégorie?')) return;
-    
-    try {
-      const { error } = await supabase.from('categories').delete().eq('id', id);
-      if (error) throw error;
-      toast.success('Catégorie supprimée');
-      fetchData();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la suppression');
-    }
   };
 
   const formatPrice = (price: number) => {
@@ -325,13 +248,6 @@ const AdminPage = () => {
           >
             <Package className="h-4 w-4 mr-2" />
             Produits
-          </Button>
-          <Button
-            variant={activeTab === 'categories' ? 'default' : 'outline'}
-            onClick={() => setActiveTab('categories')}
-          >
-            <Grid className="h-4 w-4 mr-2" />
-            Catégories
           </Button>
           <Button
             variant={activeTab === 'orders' ? 'default' : 'outline'}
@@ -613,142 +529,6 @@ const AdminPage = () => {
           </motion.div>
         )}
 
-        {/* Categories Tab */}
-        {activeTab === 'categories' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
-          >
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Gestion des catégories</h1>
-              <Dialog open={isCategoryDialogOpen} onOpenChange={(open) => {
-                setIsCategoryDialogOpen(open);
-                if (!open) resetCategoryForm();
-              }}>
-                <DialogTrigger asChild>
-                  <Button className="btn-primary-gradient">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Ajouter une catégorie
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie'}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div>
-                      <Label htmlFor="cat-name">Nom de la catégorie *</Label>
-                      <Input
-                        id="cat-name"
-                        value={categoryFormData.name}
-                        onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
-                        placeholder="Électronique"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cat-slug">Slug (URL)</Label>
-                      <Input
-                        id="cat-slug"
-                        value={categoryFormData.slug}
-                        onChange={(e) => setCategoryFormData({ ...categoryFormData, slug: e.target.value })}
-                        placeholder="electronique"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cat-icon">Icône (emoji)</Label>
-                      <Input
-                        id="cat-icon"
-                        value={categoryFormData.icon}
-                        onChange={(e) => setCategoryFormData({ ...categoryFormData, icon: e.target.value })}
-                        placeholder="📱"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cat-description">Description</Label>
-                      <Textarea
-                        id="cat-description"
-                        value={categoryFormData.description}
-                        onChange={(e) => setCategoryFormData({ ...categoryFormData, description: e.target.value })}
-                        placeholder="Description de la catégorie..."
-                        rows={2}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cat-order">Ordre d'affichage</Label>
-                      <Input
-                        id="cat-order"
-                        type="number"
-                        value={categoryFormData.display_order}
-                        onChange={(e) => setCategoryFormData({ ...categoryFormData, display_order: parseInt(e.target.value) || 0 })}
-                        placeholder="1"
-                      />
-                    </div>
-                    <Button
-                      className="w-full btn-primary-gradient"
-                      onClick={handleSubmitCategory}
-                      disabled={!categoryFormData.name}
-                    >
-                      {editingCategory ? 'Enregistrer les modifications' : 'Ajouter la catégorie'}
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-            {isLoading ? (
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-16 bg-muted rounded-xl animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {categories.map((category) => (
-                  <div
-                    key={category.id}
-                    className="flex items-center gap-4 p-4 bg-card rounded-xl shadow-card"
-                  >
-                    <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center text-2xl">
-                      {category.icon || '📦'}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold">{category.name}</h3>
-                      <p className="text-sm text-muted-foreground truncate">
-                        {category.description || 'Sans description'}
-                      </p>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => openEditCategoryDialog(category)}
-                      >
-                        <Edit2 className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-destructive"
-                        onClick={() => handleDeleteCategory(category.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                {categories.length === 0 && (
-                  <div className="col-span-full text-center py-12 text-muted-foreground">
-                    Aucune catégorie pour le moment
-                  </div>
-                )}
-              </div>
-            )}
-          </motion.div>
-        )}
-
         {/* Orders Tab */}
         {activeTab === 'orders' && (
           <motion.div
@@ -848,8 +628,8 @@ function StatCard({ title, value, icon: Icon, color }: {
 
 // Login Form Component
 function LoginForm({ onLogin }: { onLogin: (email: string, password: string) => void }) {
-  const [email, setEmail] = useState('admin@loufabusiness.sn');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -900,21 +680,7 @@ function LoginForm({ onLogin }: { onLogin: (email: string, password: string) => 
           <Button type="submit" className="w-full btn-primary-gradient" disabled={isLoading}>
             {isLoading ? 'Connexion...' : 'Se connecter'}
           </Button>
-          <p className="text-xs text-center text-muted-foreground">
-            Par défaut: admin@loufabusiness.sn / admin123
-          </p>
         </form>
-        
-        {/* Lien de retour vers l'accueil */}
-        <div className="mt-6 text-center">
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Retour à l'accueil
-          </Link>
-        </div>
       </motion.div>
     </div>
   );
