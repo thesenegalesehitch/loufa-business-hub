@@ -42,7 +42,7 @@ const WhatsAppChat = () => {
                 <MessageCircle className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-semibold">Loufa Business</p>
+                <p className="font-semibold">Loufa Pro</p>
                 <p className="text-xs opacity-90">En ligne</p>
               </div>
             </div>

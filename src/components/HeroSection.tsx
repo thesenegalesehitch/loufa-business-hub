@@ -30,7 +30,7 @@ export function HeroSection() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
             >
               Achetez tout ce dont vous avez besoin sur{' '}
-              <span className="text-primary">Loufa Business</span>
+              <span className="text-primary">Loufa Pro</span>
             </motion.h1>
 
             <motion.p

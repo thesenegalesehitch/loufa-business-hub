@@ -59,7 +59,7 @@ ${itemsList}
 📞 *Téléphone:* ${phone}
 
 ---
-_Commande envoyée depuis Loufa Business_`;
+_Commande envoyée depuis Loufa Pro_`;
   }, [items, name, phone, address, location, totalPrice, formatPrice]);
 
   const handleSubmit = async () => {

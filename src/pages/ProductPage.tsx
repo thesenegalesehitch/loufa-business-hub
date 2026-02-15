@@ -79,7 +79,7 @@ const ProductPage = () => {
     try {
       await navigator.share({
         title: product.name,
-        text: `Découvrez ${product.name} sur Loufa Business!`,
+        text: `Découvrez ${product.name} sur Loufa Pro!`,
         url: window.location.href,
       });
     } catch {

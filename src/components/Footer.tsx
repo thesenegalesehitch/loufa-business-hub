@@ -82,7 +82,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-background/10 pt-8 text-center text-sm text-background/50">
-          <p>© {currentYear} Loufa Business. Tous droits réservés.</p>
+          <p>© {currentYear} Loufa Pro. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

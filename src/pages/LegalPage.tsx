@@ -22,7 +22,7 @@ const LegalPage = () => {
               <h2 className="text-xl font-semibold text-foreground">1. Objet</h2>
               <p>
                 Les présentes Conditions Générales de Vente ont pour objet de définir les droits et obligations 
-                des parties dans le cadre de la vente en ligne de produits proposés par Loufa Business.
+                Loufa Pro
               </p>
 
               <h2 className="text-xl font-semibold text-foreground">2. Produits</h2>
@@ -69,7 +69,7 @@ const LegalPage = () => {
 
               <h2 className="text-xl font-semibold text-foreground">9. Responsabilité</h2>
               <p>
-                Loufa Business ne peut être tenu responsable des dommages résultant de l'utilisation 
+                Loufa Pro ne peut être tenu responsable des dommages résultant de l'utilisation 
                 des produits achetés sur le site.
               </p>
 
@@ -106,8 +106,7 @@ const LegalPage = () => {
               <h2 className="text-xl font-semibold text-foreground">4. Vos droits</h2>
               <p>
                 Conformément à la loi, vous disposez d'un droit d'accès, de rectification et de 
-                suppression de vos données. Pour exercer ces droits, contactez-nous à 
-                contact@loufabusiness.sn.
+                contact@loufapro.sn
               </p>
 
               <h2 className="text-xl font-semibold text-foreground">5. Sécurité</h2>
@@ -126,7 +125,7 @@ const LegalPage = () => {
               n'hésitez pas à nous contacter.
             </p>
             <div className="space-y-2">
-              <p><strong>Email:</strong> contact@loufabusiness.sn</p>
+              contact@loufapro.sn
               <p><strong>WhatsApp:</strong> +221 76 755 89 76</p>
               <p><strong>Adresse:</strong> Dakar, Sénégal</p>
             </div>

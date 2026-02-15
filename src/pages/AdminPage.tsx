@@ -666,7 +666,7 @@ function LoginForm({ onLogin }: { onLogin: (email: string, password: string) => 
             <span className="text-primary-foreground font-bold text-2xl">L</span>
           </div>
           <h1 className="text-2xl font-bold">Admin Panel</h1>
-          <p className="text-muted-foreground">Loufa Business</p>
+          <p className="text-muted-foreground">Loufa Pro</p>
         </div>
         
         <form onSubmit={handleSubmit} className="bg-card p-6 rounded-xl shadow-card space-y-4">
