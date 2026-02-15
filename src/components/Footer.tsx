@@ -15,7 +15,7 @@ export function Footer() {
               <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">L</span>
               </div>
-              <span className="font-bold text-xl">Loufa Business</span>
+              <span className="font-bold text-xl">Loufa Pro</span>
             </div>
             <p className="text-sm text-background/70 mb-4">
               La marketplace N°1 au Sénégal. Des milliers de produits de qualité livrés chez vous.

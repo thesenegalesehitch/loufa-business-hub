@@ -22,7 +22,7 @@ export function Header() {
               <span className="text-primary-foreground font-bold text-xl">L</span>
             </div>
             <span className="font-bold text-xl hidden sm:block">
-              Loufa <span className="text-primary">Business</span>
+              Loufa <span className="text-primary">Pro</span>
             </span>
           </Link>
 
