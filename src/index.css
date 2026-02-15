@@ -4,8 +4,7 @@
 
 /* Loufa Business - Marketplace Design System */
 /* Inspired by African e-commerce with warm, trustworthy colors */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* Font loaded via index.html for better performance */
 
 @layer base {
   :root {
