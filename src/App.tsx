@@ -13,6 +13,8 @@ import AdminPage from "./pages/AdminPage";
 import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import FAQPage from "./pages/FAQPage";
+import LegalPage from "./pages/LegalPage";
+import WhatsAppChat from "./components/WhatsAppChat";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -33,8 +35,20 @@ const App = () => (
             <Route path="/panier" element={<CartPage />} />
             <Route path="/a-propos" element={<AboutPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/produit/:slug" element={<ProductDetailPage />} />
+            <Route path="/categorie/:slug" element={<CategoryPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/panier" element={<CartPage />} />
+            <Route path="/a-propos" element={<AboutPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/connexion" element={<LoginPage />} />
-          <Route path="/faq" element={<FAQPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/mentions-legales" element={<LegalPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <WhatsAppChat />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
