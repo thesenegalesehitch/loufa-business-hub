@@ -32,14 +32,7 @@ const App = () => (
             <Route path="/produit/:slug" element={<ProductDetailPage />} />
             <Route path="/categorie/:slug" element={<CategoryPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/panier" element={<CartPage />} />
-            <Route path="/a-propos" element={<AboutPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/produit/:slug" element={<ProductDetailPage />} />
-            <Route path="/categorie/:slug" element={<CategoryPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/categories/:slug" element={<ProductPage />} />
             <Route path="/panier" element={<CartPage />} />
             <Route path="/a-propos" element={<AboutPage />} />
             <Route path="/admin" element={<AdminPage />} />
@@ -49,8 +42,6 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <WhatsAppChat />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

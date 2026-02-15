@@ -86,9 +86,23 @@ const AdminPage = () => {
 
   const handleLogin = async (email: string, password: string) => {
     try {
+      console.log('Attempting login with:', email);
+      
       // Authentification via Supabase
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Supabase auth error:', error);
+        toast.error(error.message || 'Erreur de connexion');
+        return;
+      }
+      
+      if (!data.user) {
+        toast.error('Aucun utilisateur trouvé');
+        return;
+      }
+      
+      console.log('User logged in:', data.user.id);
       
       // Vérifier si l'utilisateur est admin
       const { data: adminData, error: adminError } = await supabase
@@ -97,9 +111,11 @@ const AdminPage = () => {
         .eq('user_id', data.user.id)
         .single();
         
+      console.log('Admin check result:', adminData, adminError);
+        
       if (adminError || !adminData) {
         await supabase.auth.signOut();
-        toast.error('Accès admin refusé');
+        toast.error('Accès admin refusé - utilisateur non autorisé');
         return;
       }
       
@@ -108,6 +124,7 @@ const AdminPage = () => {
       toast.success('Connexion réussie');
     } catch (error) {
       const err = error as Error;
+      console.error('Full login error:', err);
       toast.error(err.message || 'Erreur de connexion');
     }
   };
