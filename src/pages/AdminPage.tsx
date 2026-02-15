@@ -106,8 +106,9 @@ const AdminPage = () => {
       setIsAuthenticated(true);
       fetchData();
       toast.success('Connexion réussie');
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur de connexion');
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message || 'Erreur de connexion');
     }
   };
 
@@ -148,8 +149,9 @@ const AdminPage = () => {
       setIsDialogOpen(false);
       resetForm();
       fetchData();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de l\'enregistrement');
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message || 'Erreur lors de l\'enregistrement');
     }
   };
 
@@ -161,8 +163,9 @@ const AdminPage = () => {
       if (error) throw error;
       toast.success('Produit supprimé');
       fetchData();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la suppression');
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message || 'Erreur lors de la suppression');
     }
   };
 
@@ -172,8 +175,9 @@ const AdminPage = () => {
       if (error) throw error;
       toast.success('Statut mis à jour');
       fetchData();
-    } catch (error: any) {
-      toast.error(error.message || 'Erreur lors de la mise à jour');
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message || 'Erreur lors de la mise à jour');
     }
   };
 
@@ -583,7 +587,7 @@ const AdminPage = () => {
                     </div>
                     
                     <div className="text-sm space-y-1 mb-3">
-                      {(order.items as any[]).map((item: any, i: number) => (
+                      {(order.items as { name: string; quantity: number; price: number }[]).map((item, i) => (
                         <p key={i} className="text-muted-foreground">
                           • {item.name} x{item.quantity}
                         </p>
@@ -613,7 +617,7 @@ const AdminPage = () => {
 function StatCard({ title, value, icon: Icon, color }: { 
   title: string; 
   value: string; 
-  icon: any; 
+  icon: React.ComponentType<{ className?: string }>;
   color: 'primary' | 'success' | 'warning' | 'accent';
 }) {
   const bgColors = {

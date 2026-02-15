@@ -3,6 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix for default markers
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -26,8 +27,9 @@ function safeDestroyMap(container: HTMLDivElement | null, map: L.Map | null) {
     // ignore
   }
 
-  // React 18 StrictMode can mount/unmount twice; ensure container can be re-used safely.
+  // Container cleanup for React 18 StrictMode
   if (container) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (container as any)._leaflet_id = undefined;
     container.innerHTML = '';
   }
@@ -107,9 +109,8 @@ export function LocationPicker({ onLocationSelect, initialPosition = null, inter
       safeDestroyMap(container, map);
       mapRef.current = null;
       markerRef.current = null;
-    };
-    // Recreate map only if these change
-  }, [interactive, initialPosition?.lat, initialPosition?.lng]);
+    }; // eslint-disable-line react-hooks/exhaustive-deps
+  }, [interactive]);
 
   return (
     <div>
@@ -162,8 +163,8 @@ export function StaticLocationMap({ center, zoom = 15, markerPosition, className
       safeDestroyMap(container, map);
       mapRef.current = null;
       markerRef.current = null;
-    };
-  }, [center[0], center[1], zoom, markerPosition?.[0], markerPosition?.[1]]);
+    }; // eslint-disable-line react-hooks/exhaustive-deps
+  }, [center, zoom, markerPosition]);
 
   return (
     <div className={`h-64 rounded-xl overflow-hidden border ${className || ''}`}>
