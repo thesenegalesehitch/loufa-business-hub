@@ -67,11 +67,11 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-background/70">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                +221 77 123 45 67
+                +221 76 755 8976
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                contact@loufabusiness.sn
+                loufaparfums3@gmail.com
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />

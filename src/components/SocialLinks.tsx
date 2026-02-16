@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Facebook, Instagram, MessageCircle, Mail, Ghost } from 'lucide-react';
+import { Facebook, Instagram, MessageCircle, Mail, Ghost, X, Send } from 'lucide-react';
 
 interface SocialLink {
   name: string;
@@ -11,37 +11,58 @@ interface SocialLink {
 
 const socialLinks: SocialLink[] = [
   {
-    name: 'Facebook',
-    icon: <Facebook className="h-5 w-5" />,
-    url: 'https://facebook.com/loufabusiness',
-    color: 'bg-[#1877F2]/10 text-[#1877F2]',
-    hoverColor: 'hover:bg-[#1877F2] hover:text-white',
+    name: 'X',
+    icon: <X className="h-5 w-5" />,
+    url: 'https://x.com/loufapro95?s=21',
+    color: 'bg-black/10 text-black',
+    hoverColor: 'hover:bg-black hover:text-white',
   },
   {
     name: 'Instagram',
     icon: <Instagram className="h-5 w-5" />,
-    url: 'https://instagram.com/loufabusiness',
+    url: 'https://www.instagram.com/loufa_pro_95',
     color: 'bg-gradient-to-br from-[#833AB4]/10 via-[#FD1D1D]/10 to-[#F77737]/10 text-[#E4405F]',
     hoverColor: 'hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] hover:text-white',
   },
   {
+    name: 'Facebook',
+    icon: <Facebook className="h-5 w-5" />,
+    url: 'https://www.facebook.com/share/1cbGpdY382/?mibextid=wwXIfr',
+    color: 'bg-[#1877F2]/10 text-[#1877F2]',
+    hoverColor: 'hover:bg-[#1877F2] hover:text-white',
+  },
+  {
+    name: 'TikTok',
+    icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>,
+    url: 'https://www.tiktok.com/@loufapro214',
+    color: 'bg-black/10 text-black',
+    hoverColor: 'hover:bg-black hover:text-white',
+  },
+  {
+    name: 'Telegram',
+    icon: <Send className="h-5 w-5" />,
+    url: 'https://t.me/loufa_pro95',
+    color: 'bg-[#0088cc]/10 text-[#0088cc]',
+    hoverColor: 'hover:bg-[#0088cc] hover:text-white',
+  },
+  {
     name: 'Snapchat',
     icon: <Ghost className="h-5 w-5" />,
-    url: 'https://snapchat.com/add/loufabusiness',
+    url: 'https://snapchat.com/t/NH956bqP',
     color: 'bg-[#FFFC00]/10 text-[#FFFC00]',
     hoverColor: 'hover:bg-[#FFFC00] hover:text-black',
   },
   {
     name: 'WhatsApp',
     icon: <MessageCircle className="h-5 w-5" />,
-    url: 'https://wa.me/221771234567',
+    url: 'https://wa.me/c/221767558976',
     color: 'bg-[#25D366]/10 text-[#25D366]',
     hoverColor: 'hover:bg-[#25D366] hover:text-white',
   },
   {
     name: 'Email',
     icon: <Mail className="h-5 w-5" />,
-    url: 'mailto:contact@loufabusiness.sn',
+    url: 'mailto:loufaparfums3@gmail.com',
     color: 'bg-primary/10 text-primary',
     hoverColor: 'hover:bg-primary hover:text-primary-foreground',
   },

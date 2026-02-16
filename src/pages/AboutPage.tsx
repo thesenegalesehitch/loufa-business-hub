@@ -113,7 +113,7 @@ export default function AboutPage() {
                   size="lg" 
                   variant="outline" 
                   className="rounded-xl"
-                  onClick={() => window.open('https://wa.me/221771234567', '_blank')}
+                  onClick={() => window.open('https://wa.me/c/221767558976', '_blank')}
                 >
                   <Phone className="mr-2 h-5 w-5" />
                   Me contacter
@@ -279,7 +279,7 @@ export default function AboutPage() {
                 size="lg" 
                 variant="outline" 
                 className="rounded-xl bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
-                onClick={() => window.open('https://wa.me/221771234567', '_blank')}
+                onClick={() => window.open('https://wa.me/c/221767558976', '_blank')}
               >
                 Contacter sur WhatsApp
               </Button>

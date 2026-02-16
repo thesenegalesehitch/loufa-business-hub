@@ -35,7 +35,7 @@ const CartPage = () => {
   }, []);
 
   const totalPrice = getTotalPrice();
-  const WHATSAPP_NUMBER = '221771234567'; // Replace with actual number
+  const WHATSAPP_NUMBER = '221767558976'; // Replace with actual number
 
   const generateWhatsAppMessage = useCallback(() => {
     const itemsList = items
@@ -287,7 +287,7 @@ _Commande envoyée depuis Loufa Pro_`;
                       id="phone"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+221 77 123 45 67"
+                      placeholder="+221 76 755 89 76"
                       className={errors.phone ? 'border-destructive' : ''}
                     />
                     {errors.phone && (

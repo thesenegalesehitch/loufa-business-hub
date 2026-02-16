@@ -50,7 +50,7 @@ const faqCategories = [
       },
       {
         question: 'Comment effectuer un retour ?',
-        answer: 'Contactez-nous via WhatsApp au +221 76 755 89 76 ou par email à contact@loufabusiness.sn. Nous vous fournirons les instructions de retour.'
+        answer: 'Contactez-nous via WhatsApp au +221 76 755 89 76 ou par email à loufaparfums3@gmail.com. Nous vous fournirons les instructions de retour.'
       },
       {
         question: 'Quand serai-je remboursé ?',
@@ -127,13 +127,13 @@ const FAQPage = () => {
           </a>
           
           <a 
-            href="mailto:contact@loufabusiness.sn"
+                        href="mailto:loufaparfums3@gmail.com"
             className="flex items-center justify-center gap-3 p-4 bg-primary text-white rounded-xl hover:opacity-90 transition-opacity"
           >
             <Mail className="h-6 w-6" />
             <div className="text-left">
               <p className="font-semibold">Email</p>
-              <p className="text-sm opacity-90">contact@loufabusiness.sn</p>
+              <p className="text-sm opacity-90">loufaparfums3@gmail.com</p>
             </div>
           </a>
           
