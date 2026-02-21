@@ -253,8 +253,8 @@ const AdminPage = () => {
       <header className="bg-card border-b sticky top-0 z-50">
         <div className="container-app flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">L</span>
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center">
+              <img src="/logo.jpg" alt="Loufa Pro" className="w-full h-full object-contain" />
             </div>
             <span className="font-bold">Admin Panel</span>
           </div>
@@ -682,8 +682,8 @@ function LoginForm({ onLogin }: { onLogin: (email: string, password: string) => 
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">L</span>
+          <div className="w-16 h-16 rounded-2xl overflow-hidden flex items-center justify-center mx-auto mb-4">
+            <img src="/logo.jpg" alt="Loufa Pro" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-2xl font-bold">Admin Panel</h1>
           <p className="text-muted-foreground">Loufa Pro</p>

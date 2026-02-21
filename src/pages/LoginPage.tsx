@@ -30,8 +30,8 @@ const LoginPage = () => {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">L</span>
+          <div className="w-16 h-16 rounded-2xl overflow-hidden flex items-center justify-center mx-auto mb-4">
+            <img src="/logo.jpg" alt="Loufa Pro" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-2xl font-bold">Connexion</h1>
           <p className="text-muted-foreground">Connectez-vous pour accéder à votre panier</p>
